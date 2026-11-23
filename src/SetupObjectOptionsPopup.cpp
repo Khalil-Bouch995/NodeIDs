@@ -113,4 +113,3 @@ struct SetupObjectOptionsPopupIDs : Modify<SetupObjectOptionsPopupIDs, SetupObje
 
 		return true;
 	}
-};
