@@ -11,24 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Geode CLI & SDK
-        run: |
-          curl -sSL https://github.com -o cli.zip
-          unzip -o cli.zip -d ~/.local/bin
-          chmod +x ~/.local/bin/geode
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          geode sdk install --nightly || geode sdk install
-          geode sdk install-binaries -p android64
-
       - name: Build Mod
-        env:
-          ANDROID_NDK_ROOT: ${{ env.ANDROID_NDK_LATEST_HOME }}
-        run: |
-          geode build -p android64
+        uses: geode-sdk/build-geode-mod@main
+        id: build
+        with:
+          target: Android64
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: geode.node-ids
-          path: build*/*.geode
+          path: ${{ steps.build.outputs.build-output }}
           
